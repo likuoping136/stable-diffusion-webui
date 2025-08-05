@@ -1,4 +1,4 @@
-# Stable Diffusion web UI
+# Stable Diffusion web UI test
 A web interface for Stable Diffusion, implemented using Gradio library.
 
 ![](screenshot.png)
