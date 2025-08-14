@@ -76,7 +76,7 @@ def run_retry(command, desc=None, errdesc=None, custom_env=None, live=False, max
 
     while retry_count <= max_retries:
         if desc is not None:
-            print(desc+":"+retry_count+1+" times")
+            print(f"{desc}: {retry_count + 1} times")
         if live:
             result = subprocess.run(command, shell=True,
                                     env=os.environ if custom_env is None else custom_env)
