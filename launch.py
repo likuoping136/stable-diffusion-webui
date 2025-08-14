@@ -70,6 +70,43 @@ def commit_hash():
 
     return stored_commit_hash
 
+def run_retry(command, desc=None, errdesc=None, custom_env=None, live=False, max_retries=3):
+
+    retry_count = 0
+
+    while retry_count <= max_retries:
+        if desc is not None:
+            print(desc+":"+retry_count+1+" times")
+        if live:
+            result = subprocess.run(command, shell=True,
+                                    env=os.environ if custom_env is None else custom_env)
+            if result.returncode == 128 and retry_count < max_retries:
+                retry_count += 1
+                continue
+            elif result.returncode != 0:
+                raise RuntimeError(f"""{errdesc or 'Error running command'}.
+Command: {command}
+Error code: {result.returncode}""")
+            return ""
+
+        result = subprocess.run(command, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, shell=True,
+                                env=os.environ if custom_env is None else custom_env)
+
+        if result.returncode == 128 and retry_count < max_retries:
+            retry_count += 1
+            continue
+        elif result.returncode != 0:
+            message = f"""{errdesc or 'Error running command'}.
+Command: {command}
+Error code: {result.returncode}
+stdout: {result.stdout.decode(encoding="utf8", errors="ignore") if len(result.stdout)>0 else '<empty>'}
+stderr: {result.stderr.decode(encoding="utf8", errors="ignore") if len(result.stderr)>0 else '<empty>'}
+"""
+            raise RuntimeError(message)
+
+        return result.stdout.decode(encoding="utf8", errors="ignore")
+
 
 def run(command, desc=None, errdesc=None, custom_env=None, live=False):
     if desc is not None:
@@ -86,7 +123,7 @@ Error code: {result.returncode}""")
 
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env=os.environ if custom_env is None else custom_env)
 
-    if result.returncode != 0:
+    if result.returncode != 0 :
 
         message = f"""{errdesc or 'Error running command'}.
 Command: {command}
@@ -148,7 +185,7 @@ def git_clone(url, dir, name, commithash=None):
         run(f'"{git}" -C "{dir}" checkout {commithash}', f"Checking out commit for {name} with hash: {commithash}...", f"Couldn't checkout commit {commithash} for {name}")
         return
 
-    run(f'"{git}" clone "{url}" "{dir}"', f"Cloning {name} into {dir}...", f"Couldn't clone {name}")
+    run_retry(f'"{git}" clone "{url}" "{dir}"', f"Cloning {name} into {dir}...", f"Couldn't clone {name}")
 
     if commithash is not None:
         run(f'"{git}" -C "{dir}" checkout {commithash}', None, "Couldn't checkout {name}'s hash: {commithash}")
