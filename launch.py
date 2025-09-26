@@ -40,8 +40,8 @@ def main():
 
     if args.test_server:
         configure_for_tests()
-
-    #start()
+    if not args.nostart:
+        start()
 
 
 if __name__ == "__main__":
