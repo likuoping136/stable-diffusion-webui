@@ -183,7 +183,7 @@ def git_clone(url, dir, name, commithash=None):
 
         run_git(dir, name, 'fetch', f"Fetching updates for {name}...", f"Couldn't fetch {name}", autofix=False)
 
-        run_git(dir, name, f'checkout {commithash}', f"Checking out commit for {name} with hash: {commithash}...", f"Couldn't checkout commit {commithash} for {name}", live=True)
+        run_git(dir, name, f'checkout --force {commithash}', f"Checking out commit for {name} with hash: {commithash}...", f"Couldn't checkout commit {commithash} for {name}", live=True)
 
         return
 
@@ -194,7 +194,7 @@ def git_clone(url, dir, name, commithash=None):
         raise
 
     if commithash is not None:
-        run(f'"{git}" -C "{dir}" checkout {commithash}', None, "Couldn't checkout {name}'s hash: {commithash}")
+        run(f'"{git}" -C "{dir}" checkout --force {commithash}', None, "Couldn't checkout {name}'s hash: {commithash}")
 
 
 def git_pull_recursive(dir):
