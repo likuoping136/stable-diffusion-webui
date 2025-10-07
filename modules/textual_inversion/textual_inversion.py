@@ -175,7 +175,7 @@ class EmbeddingDatabase:
                     # if data is None, means this is not an embedding, just a preview image
                     return
         elif ext in ['.BIN', '.PT']:
-            data = torch.load(path, map_location="cpu")
+            data = torch.load(path, map_location="cpu", weights_only=False)
         elif ext in ['.SAFETENSORS']:
             data = safetensors.torch.load_file(path, device="cpu")
         else:
@@ -703,3 +703,4 @@ def save_embedding(embedding, optimizer, checkpoint, embedding_name, filename, r
         embedding.name = old_embedding_name
         embedding.cached_checksum = old_cached_checksum
         raise
+
