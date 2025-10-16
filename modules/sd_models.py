@@ -306,7 +306,7 @@ def read_state_dict(checkpoint_file, print_global_state=False, map_location=None
             pl_sd = safetensors.torch.load(open(checkpoint_file, 'rb').read())
             pl_sd = {k: v.to(device) for k, v in pl_sd.items()}
     else:
-        pl_sd = torch.load(checkpoint_file, map_location=map_location or shared.weight_load_location， weights_only=False)
+        pl_sd = torch.load(checkpoint_file, map_location=map_location or shared.weight_load_location, weights_only=False)
 
     if print_global_state and "global_step" in pl_sd:
         print(f"Global Step: {pl_sd['global_step']}")
@@ -934,4 +934,5 @@ def apply_token_merging(sd_model, token_merging_ratio):
         )
 
     sd_model.applied_token_merged_ratio = token_merging_ratio
+
 
