@@ -75,6 +75,19 @@ def webui():
                 auto_launch_browser = True
             elif shared.opts.auto_launch_browser == "Local":
                 auto_launch_browser = not cmd_opts.webui_is_non_local
+        if timer.args.log_startup:
+            print(f"share:{cmd_opts.share} "
+                  f"server_name:{initialize_util.gradio_server_name()} "
+                  f"server_port:{cmd_opts.port} "
+                  f"root_path:{'/'+cmd_opts.subpath if cmd_opts.subpath else ''} "
+                  f"ssl_keyfile:{cmd_opts.tls_keyfile} "
+                  f"sl_certfile:{cmd_opts.tls_certfile} "
+                  f"ssl_verify:{cmd_opts.disable_tls_verify} "
+                  f"debug:{cmd_opts.gradio_debug} "
+                  f"auth:{gradio_auth_creds} "
+                  f"inbrowser:{auto_launch_browser} "
+                  f"prevent_thread_lock:{True} "
+                  f"allowed_paths:{cmd_opts.gradio_allowed_path}")
 
         app, local_url, share_url = shared.demo.launch(
             share=cmd_opts.share,
