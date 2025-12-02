@@ -19,7 +19,8 @@ def initialize():
     shared.opts = options.Options(shared_options.options_templates, shared_options.restricted_opts)
     shared.restricted_opts = shared_options.restricted_opts
     try:
-        shared.opts.load(shared.config_filename)
+        print("shared.config_filename:"+shared.config_filename)
+        shared.opts.load(shared.config_qfilename)
     except FileNotFoundError:
         pass
 

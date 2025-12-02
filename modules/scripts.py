@@ -595,10 +595,11 @@ class ScriptRunner:
                 self.scripts.append(script)
                 self.alwayson_scripts.append(script)
                 script.alwayson = True
-
+                print(f"isImg2img:{is_img2img}, initialize_scripts Object:{script.filename}")
             elif visibility:
                 self.scripts.append(script)
                 self.selectable_scripts.append(script)
+                print(f"isImg2img:{is_img2img}, initialize_scripts Object:{script.filename}")
 
         self.callback_map.clear()
 
