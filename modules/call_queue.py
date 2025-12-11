@@ -20,7 +20,7 @@ def wrap_queued_call(func):
 def wrap_gradio_gpu_call(func, extra_outputs=None):
     @wraps(func)
     def f(*args, **kwargs):
-
+        print(f"wrap_gradio_gpu_call:{args} ** {kwargs}")
         # if the first argument is a string that says "task(...)", it is treated as a job id
         if args and type(args[0]) == str and args[0].startswith("task(") and args[0].endswith(")"):
             id_task = args[0]
@@ -54,6 +54,7 @@ def wrap_gradio_call(func, extra_outputs=None, add_stats=False):
         t = time.perf_counter()
 
         try:
+            print(f"wrap_gradio_call:{args} ** {kwargs} ** {extra_outputs}")
             res = list(func(*args, **kwargs))
         except Exception as e:
             # When printing out our debug argument list,

@@ -407,7 +407,7 @@ def create_ui():
                 output_panel.infotext,
                 output_panel.html_log,
             ]
-
+            print(f"txt2img_inputs:{txt2img_inputs}")
             txt2img_args = dict(
                 fn=wrap_gradio_gpu_call(modules.txt2img.txt2img, extra_outputs=[None, '', '']),
                 _js="submit",
