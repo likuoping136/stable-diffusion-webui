@@ -20,7 +20,7 @@ def initialize():
     shared.restricted_opts = shared_options.restricted_opts
     try:
         print("shared.config_filename:"+shared.config_filename)
-        shared.opts.load(shared.config_qfilename)
+        shared.opts.load(shared.config_filename)
     except FileNotFoundError:
         pass
 
