@@ -73,9 +73,9 @@ def commit_hash():
 def git_tag():
     try:
         return subprocess.check_output([git, "-C", script_path, "describe", "--tags"], shell=False, encoding='utf8').strip()
-    except Exception:
+    except Exception as e:
         try:
-
+            print(f"git_tag fail:{e}")
             changelog_md = os.path.join(os.path.dirname(os.path.dirname(__file__)), "CHANGELOG.md")
             with open(changelog_md, "r", encoding="utf-8") as file:
                 line = next((line.strip() for line in file if line.strip()), "<none>")
